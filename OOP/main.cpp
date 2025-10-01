@@ -9,7 +9,6 @@
 using namespace std;
 
 
-/* -------------------- Main -------------------- */
 int main() {
     Inventory inventory;
     inventory.loadFromFile("materials.txt");
