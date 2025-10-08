@@ -1,4 +1,3 @@
-// sales_manager.cpp
 #include <bits/stdc++.h>
 #include "Material.h"
 #include "Inventory.h"

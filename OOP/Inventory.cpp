@@ -59,11 +59,57 @@ bool Inventory::reduceStock(const string& id, int qty) {
 
 vector<Material> Inventory::searchByName(const string& key) const {
     vector<Material> res;
-    for (const auto& m : items) {
-        if (m.getName().find(key) != string::npos) res.push_back(m);
+    if (key.empty()) return res;
+
+    // Nhập độ chính xác
+    double threshold;
+    cout << "Nhap do chinh xac tu 0.0 den 1.0: ";
+    while (!(cin >> threshold) || threshold < 0.0 || threshold > 1.0) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Nhap lai do chinh xac (0.0 - 1.0): ";
+    }
+
+    // helper: lowercase
+    auto lower = [](const string &s) {
+        string t = s;
+        for (auto &c : t) c = (char)tolower((unsigned char)c);
+        return t;
+    };
+
+    string k = lower(key);
+
+    // compute LCS length between a and b
+    auto lcs_len = [](const string &a, const string &b) {
+        int n = (int)a.size(), m = (int)b.size();
+        if (n == 0 || m == 0) return 0;
+        vector<int> prev(m+1, 0), cur(m+1, 0);
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m; ++j) {
+                if (a[i-1] == b[j-1]) cur[j] = prev[j-1] + 1;
+                else cur[j] = std::max(prev[j], cur[j-1]);
+            }
+            swap(prev, cur);
+            fill(cur.begin(), cur.end(), 0);
+        }
+        return prev[m];
+    };
+
+    for (const auto& mtr : items) {
+        string name = lower(mtr.getName());
+        // exact substring check
+        if (name.find(k) != string::npos) {
+            res.push_back(mtr);
+            continue;
+        }
+        int common = lcs_len(k, name);
+        double sim = (double)common / (double)name.size(); // dùng độ dài name, không phải keyword
+        if (sim >= threshold) res.push_back(mtr);
     }
     return res;
 }
+
+
 
 void Inventory::listAll() const {
     cout << left << setw(10) << "ID" << left << setw(25) << "Ten" << left << setw(8) << "Don vi"
