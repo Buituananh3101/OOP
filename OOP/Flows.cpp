@@ -7,6 +7,8 @@
 #include "Flows.h"
 using namespace std;
 
+
+
 void addMaterialFlow(Inventory& inv) {
     cout << "\n--- Them vat lieu moi ---\n";
     string id = inputLine("ID: ");
