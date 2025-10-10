@@ -31,18 +31,18 @@ void runApp() {
     if (isAdmin) {
         while (true) {
             cout << "\n====== MENU ADMIN ======\n";
-            cout << "1. Them vat lieu\n";
-            cout << "2. Cap nhat vat lieu\n";
-            cout << "3. Xoa vat lieu\n";
-            cout << "4. Danh sach vat lieu\n";
-            cout << "5. Tim vat lieu theo ten\n";
-            cout << "6. Nhap kho\n";
-            cout << "7. Ban (tao hoa don)\n";
-            cout << "8. Luu va thoat\n";
-            cout << "9. Doi mat khau admin\n";
-            cout << "9. Doi mat khau nhan vien\n";
-            cout << "0. Thoat (khong luu)\n";
-            cout << "Chon (0-9): ";
+            cout << " 1. Them vat lieu\n";
+            cout << " 2. Cap nhat vat lieu\n";
+            cout << " 3. Xoa vat lieu\n";
+            cout << " 4. Danh sach vat lieu\n";
+            cout << " 5. Tim vat lieu theo ten\n";
+            cout << " 6. Nhap kho\n";
+            cout << " 7. Ban (tao hoa don)\n";
+            cout << " 8. Luu va thoat\n";
+            cout << " 9. Doi mat khau admin\n";
+            cout << "10. Doi mat khau nhan vien\n";
+            cout << " 0. Thoat (khong luu)\n";
+            cout << "Chon (0-10): ";
 
             int choice;
             if (!(cin >> choice)) break;
