@@ -79,7 +79,6 @@ vector<Material> Inventory::searchByName(const string& key) const {
 
     string k = lower(key);
 
-    // compute LCS length between a and b
     auto lcs_len = [](const string &a, const string &b) {
         int n = (int)a.size(), m = (int)b.size();
         if (n == 0 || m == 0) return 0;
@@ -97,7 +96,7 @@ vector<Material> Inventory::searchByName(const string& key) const {
 
     for (const auto& mtr : items) {
         string name = lower(mtr.getName());
-        // exact substring check
+        
         if (name.find(k) != string::npos) {
             res.push_back(mtr);
             continue;

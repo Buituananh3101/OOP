@@ -4,7 +4,8 @@
 #include <string>
 using namespace std;
 
-struct OrderItem {
+class OrderItem {
+    public:
     string id;
     string name;
     string unit;

@@ -30,7 +30,7 @@ void runApp() {
     // admin
     if (isAdmin) {
         while (true) {
-            cout << "\n====== MENU ADMIN ======\n";
+            cout << "\n__________MENU ADMIN__________\n";
             cout << " 1. Them vat lieu\n";
             cout << " 2. Cap nhat vat lieu\n";
             cout << " 3. Xoa vat lieu\n";
@@ -80,7 +80,7 @@ void runApp() {
     // nhan vien
     else {
         while (true) {
-            cout << "\n====== MENU NHAN VIEN ======\n";
+            cout << "\n__________MENU NHAN VIEN__________\n";
             cout << "1. Danh sach vat lieu\n";
             cout << "2. Tim vat lieu theo ten\n";
             cout << "3. Ban (tao hoa don)\n";
