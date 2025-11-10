@@ -1,16 +1,20 @@
 #include <bits/stdc++.h> 
 using namespace std;
 
+void clearScreen() { system("cls"); }
+void pauseScreen() { cout<<endl; system("pause"); }
+
 // === CLASS MATERIAL ===
 class Material {
 private:
   string ma;
   string ten;
+  string noiNhap;
+  string nhom;
   string donVi;
   double gia;
   int tonKho;
-  string noiNhap;
-  string nhom;
+  
 public:
   Material() : gia(0.0), tonKho(0), noiNhap(""), nhom("") {}
 
@@ -105,7 +109,7 @@ public:
     if (findIndexById(m.getId()) != -1) return false;
     danhSachNguyenLieu.push_back(m);
     return true;
-  }
+  } 
   bool removeMaterial(const string& id) {
     int idx = findIndexById(id);
     if (idx == -1) return false;
@@ -151,21 +155,24 @@ public:
     vector<Material> res;
     if (key.empty()) return res;
     double threshold;
-    cout << "Nhap do chinh xac tu 0.0 den 1.0: ";
-    while (!(cin >> threshold) || threshold < 0.0 || threshold > 1.0) {
+    cout << "Nhap do chinh xac tu 0 den 10: ";
+
+    while (!(cin >> threshold) || threshold < 0 || threshold > 10) {
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      cout << "Nhap lai do chinh xac (0.0 - 1.0): ";
+      cout << "Nhap lai do chinh xac (0 - 10): ";
     }
     // clear newline left by >> before any getline outside
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
+    threshold/=10;
+    // cout<<threshold;
     auto lower = [](const string &s) {
       string t = s;
       for (auto &c : t) c = (char)tolower((unsigned char)c);
       return t;
     };
     string k = lower(key);
+    
     auto lcs_len = [](const string &a, const string &b) {
       int n = (int)a.size(), m = (int)b.size();
       if (n == 0 || m == 0) return 0;
@@ -213,6 +220,7 @@ public:
   }
 
   void listAll() const {
+    clearScreen();
     cout << left << setw(10) << "ID"
       << left << setw(25) << "Ten"
       << left << setw(14) << "Nhom"
@@ -223,6 +231,7 @@ public:
 
     cout << string(91, '-') << "\n";
     for (const auto& m : danhSachNguyenLieu) m.printTableRow();
+    pauseScreen();
   }
 
   bool saveToFile(const string& filename) const {
@@ -260,6 +269,7 @@ public:
     ifstream ifs(filename);
     if (!ifs.is_open()) {
       cout << "Khong the mo file: " << filename << "\n";
+      pauseScreen();
       return false;
     }
 
@@ -303,7 +313,7 @@ public:
     ofstream clearFile(filename);
     clearFile << "ID,Ten,Nhom,NoiNhap,DonVi,Gia,TonKho\n";
     clearFile.close();
-
+    pauseScreen();
     return true;
   }
 };
@@ -370,6 +380,7 @@ public:
 };
 
 // === HÀM HỖ TRỢ & FLOWS ===
+
 // (Không thay đổi)
 void ignoreLine() {
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -419,6 +430,7 @@ void addMaterialFlow(Inventory& inv) {
 
   if (inv.addMaterial(m)) cout << "Them thanh cong.\n";
   else cout << "Them that bai.\n";
+  pauseScreen();
 }
 void updateMaterialFlow(Inventory& inv) {
   cout << "\n--- Cap nhat vat lieu (enter de giu)---\n";
@@ -450,22 +462,25 @@ void updateMaterialFlow(Inventory& inv) {
 
   inv.updateMaterial(id, name, unit, price, stock, noiNhap, nhom);
   cout << "Cap nhat xong.\n";
+  pauseScreen();
 }
 void removeMaterialFlow(Inventory& inv) {
   cout << "\n--- Xoa vat lieu ---\n";
   string id = inputLine("ID can xoa: ");
   if (inv.removeMaterial(id)) cout << "Xoa thanh cong.\n";
   else cout << "Khong tim thay ID.\n";
+  pauseScreen();
 }
 void restockFlow(Inventory& inv) {
   cout << "\n--- Nhap kho ---\n";
   string id = inputLine("ID: ");
   Material* p = inv.getMaterialPtr(id);
-  if (!p) { cout << "Khong tim thay ID.\n"; return; }
+  if (!p) { cout << "Khong tim thay ID.\n";  pauseScreen(); return; }
   int qty = inputInt("So luong nhap them: ");
-  if (qty <= 0) { cout << "So luong > 0.\n"; return; }
+  if (qty <= 0) { cout << "So luong > 0.\n";  pauseScreen(); return; }
   inv.restock(id, qty);
   cout << "Nhap kho thanh cong. Ton moi: " << p->getStock() << "\n";
+  pauseScreen();
 }
 void saleFlow(Inventory& inv) {
   cout << "\n--- Tao hoa don ---\n";
@@ -475,8 +490,7 @@ void saleFlow(Inventory& inv) {
     if (id.empty()) break;
     Material* p = inv.getMaterialPtr(id);
     if (!p) { cout << "Khong tim thay ID.\n"; continue; }
-    cout << "Ten: " << p->getName() << ", Ton: " << p->getStock() << ", Gia: "
-      << fixed << setprecision(2) << p->getPrice() << "\n";
+    cout << "Ten: " << p->getName() << ", Ton: " << p->getStock() << ", Gia: "<< fixed << setprecision(2) << p->getPrice() << "\n";
     int qty = inputInt("So luong ban: ");
     if (qty <= 0) { cout << "So luong > 0.\n"; continue; }
     if (p->getStock() < qty) { cout << "Ton khong du. Hien co " << p->getStock() << "\n"; continue; }
@@ -485,17 +499,20 @@ void saleFlow(Inventory& inv) {
     cart.push_back(it);
     cout << "Da them vao gio.\n";
   }
+  clearScreen();
+  cout<<endl;
   if (cart.empty()) { cout << "Khong co hang, huy hoa don.\n"; return; }
   Invoice invc(cart);
   invc.print();
   if (invc.saveToFile("invoices.txt")) cout << "Hoa don da luu (invoices.txt)\n";
   else cout << "Khong the luu hoa don!\n";
+  pauseScreen();
 }
 void searchFlow(Inventory& inv) {
   cout << "\n--- Tim vat lieu theo ten ---\n";
   string key = inputLine("Tu khoa: ");
   auto res = inv.searchByName(key);
-  if (res.empty()) { cout << "Khong tim thay.\n"; return; }
+  if (res.empty()) { cout << "Khong tim thay.\n"; pauseScreen(); return; }
   cout<<endl;
   cout << left << setw(10) << "ID" 
        << left << setw(25) << "Ten" 
@@ -507,6 +524,7 @@ void searchFlow(Inventory& inv) {
        
   cout << string(91, '-') << "\n";
   for (const auto& m : res) m.printTableRow();
+  pauseScreen();
 }
 void sortFlow(Inventory& inv) {
   cout << "\n--- Sap xep vat lieu ---\n";
@@ -540,6 +558,7 @@ void sortFlow(Inventory& inv) {
 // (Không thay đổi User và Admin)
 class User {
 protected:
+
   string tenDangNhap;
   string tepMatKhau;
 
@@ -589,6 +608,7 @@ public:
     getline(cin, curPass);
     if (curPass != oldPass) {
       cout << "Mat khau hien tai sai!\n";
+      pauseScreen();
       return;
     }
     string newPass;
@@ -599,6 +619,7 @@ public:
     fout << user << "\n" << newPass << "\n";
     fout.close();
     cout << "Doi mat khau thanh cong!\n";
+    pauseScreen();
   }
 
   virtual void showMenu(Inventory& inv) = 0;
@@ -614,11 +635,13 @@ private:
       file = "taikhoannhanvien.txt";
     } else {
       cout << "Vai tro khong hop le.\n";
+      pauseScreen();
       return;
     }
     ifstream fin(file);
     if (!fin.is_open()) {
       cout << "Khong mo duoc file: " << file << "\n";
+      pauseScreen();
       return;
     }
     string user, oldPass;
@@ -632,6 +655,7 @@ private:
     fout << user << "\n" << newPass << "\n";
     fout.close();
     cout << "Doi mat khau cho " << role << " thanh cong!\n";
+    pauseScreen();
   }
 
 public:
@@ -639,6 +663,7 @@ public:
 
   void showMenu(Inventory& inventory) override {
     while (true) {
+      clearScreen();
       cout << "\n__________MENU ADMIN__________\n";
       cout << "\nQuan li vat lieu:\n";
       cout << "   1. Them vat lieu\n";
@@ -665,7 +690,7 @@ public:
       cout << "  12. Luu va thoat\n";
       cout << "   0. Thoat (khong luu)\n";
       cout << "\nChon (0-12): ";
-
+      
       int choice;
       if (!(cin >> choice)) break;
       ignoreLine();
@@ -706,13 +731,14 @@ public:
 
   void showMenu(Inventory& inventory) override {
     while (true) {
+      clearScreen();
       cout << "\n__________MENU NHAN VIEN__________\n";
-      cout << "1. Kho\n";
+      cout << "\n1. Kho\n";
       cout << "2. Sap xep\n";
       cout << "3. Tim vat lieu theo ten\n";
       cout << "4. Ban (tao hoa don)\n";
       cout << "5. Luu va thoat\n";
-      cout << "0. Thoat (khong luu)\n";
+      cout << "0. Thoat (khong luu)\n\n";
       cout << "Chon: ";
 
       int choice;
@@ -757,10 +783,11 @@ public:
 
   void showMenu(Inventory& inventory) {
     while (true) {
+      clearScreen();
       cout << "\n__________MENU KHACH HANG__________\n";
-      cout << "1. Tim vat lieu theo ten\n";
-      cout << "2. Sap xep kho\n";
-      cout << "0. Thoat\n";
+      cout << "\n1. Tim vat lieu theo ten\n";
+      cout << "2. Sap xep theo tieu chi\n";
+      cout << "0. Thoat\n\n";
       cout << "Chon: ";
 
       int choice;
@@ -790,6 +817,7 @@ void runApp() {
   Inventory inventory;
   inventory.loadFromFile("Inventory.csv");
 
+  clearScreen();
   cout << "===== DANG NHAP HE THONG =====\n";
   cout << "1. Admin\n";
   cout << "2. Nhan vien\n";
@@ -830,7 +858,6 @@ void runApp() {
 }
 
 // === HÀM MAIN ===
-// (Không thay đổi)
 int main() {
   runApp();
   return 0;
