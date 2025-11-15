@@ -1,7 +1,9 @@
 ID,Ten,Nhom,NoiNhap,DonVi,Gia,TonKho
-XM01,Xi mang,Xi mang,Viet Nam,kg,500.00,1
-XM02,Xi mang,Xi mang,Viet Nam,kg,520.00,1
-XM03,Xi mang,Xi mang,Viet Nam,kg,520.00,144000
-XNKK,Kinh cuong luc,Kinh,China,tam,10000.00,100
-XNKK,Kinh lan can,Kinh,China,tam,10000.00,100
-1,1,1,,1,1.00,1
+XM01,Xi mang,Xi mang,Viet Nam,kg,500,103
+XM02,Xi mang,Xi mang,Viet Nam,kg,520,201
+XM03,Xi mang,Xi mang,Viet Nam,kg,520,999999
+XNKK,Kinh cuong luc,Kinh,Viet Nam,tam,10000,100
+XNKK,Kinh lan can,Kinh,Viet Nam,tam,10000,100
+1,1,1,1,1,1,0
+123,124,1,1,1,1,1
+abc,1,1,,1,1,10000
