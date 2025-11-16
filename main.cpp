@@ -550,15 +550,16 @@ void saleFlow(Inventory& inv) {
 }
 
 void searchFlow(Inventory& inv) {
+    clearScreen();
     cout << "\n--- Tim vat lieu ---\n";
-    cout << "\nChon tieu chi tim kiem:\n";
-    cout<<"    1. ID\n";
-    cout<<"    2. Ten\n";
-    cout<<"    3. Nhom\n";
-    cout<<"    4. Noi Nhap\n";
-    cout<<"    5. Gia\n";
-    cout<<"    6. Ton\n";
-    cout<<"    0. Huy\n";
+    cout << "Chon tieu chi tim kiem:\n";
+    cout<<" 1. ID\n";
+    cout<<" 2. Ten\n";
+    cout<<" 3. Nhom\n";
+    cout<<" 4. Noi Nhap\n";
+    cout<<" 5. Gia\n";
+    cout<<" 6. Ton\n";
+    cout<<" 0. Huy\n";
 
     int choice = inputInt("\nChon (0-6): ");
     if (choice < 1 || choice > 6) {
@@ -627,7 +628,7 @@ void sortFlow(Inventory& inv) {
     cout << " 4. Noi nhap\n";
     cout << " 0. Huy\n";
 
-    int criteria = inputInt("Chon tieu chi (0-4): ");
+    int criteria = inputInt("\nChon tieu chi (0-4): ");
     if (criteria < 1 || criteria > 4) {
         cout << "Huy sap xep.\n";
         return;
@@ -637,7 +638,7 @@ void sortFlow(Inventory& inv) {
     cout << " 1. Tang dan (A-Z, Nho-Lon)\n";
     cout << " 2. Giam dan (Z-A, Lon-Nho)\n";
 
-    int order = inputInt("Chon thu tu (1-2): ");
+    int order = inputInt("\nChon thu tu (1-2): ");
     bool ascending = (order == 1);
 
     inv.sortMaterials(criteria, ascending);
@@ -658,6 +659,7 @@ public:
         ifstream fin(tepMatKhau);
         if (!fin.is_open()) {
             cout << "Khong mo duoc file tai khoan: " << tepMatKhau << "\n";
+            pauseScreen();
             return false;
         }
         string user, pass;
@@ -677,6 +679,7 @@ public:
             return true;
         } else {
             cout << "Sai ten dang nhap hoac mat khau.\n";
+            pauseScreen();
             return false;
         }
     }
@@ -685,6 +688,7 @@ public:
         ifstream fin(tepMatKhau);
         if (!fin.is_open()) {
             cout << "Khong mo duoc file: " << tepMatKhau << "\n";
+            pauseScreen();
             return;
         }
         string user, oldPass;
@@ -823,7 +827,7 @@ public:
             cout << "\n__________MENU NHAN VIEN__________\n";
             cout << "\n1. Kho\n";
             cout << "2. Sap xep\n";
-            cout << "3. Tim vat lieu (nang cao)\n";
+            cout << "3. Tim vat lieu\n";
             cout << "4. Ban (tao hoa don)\n";
             cout << "5. Luu va thoat\n";
             cout << "0. Thoat (khong luu)\n\n";
@@ -871,7 +875,7 @@ public:
         while (true) {
             clearScreen();
             cout << "\n__________MENU KHACH HANG__________\n";
-            cout << "\n1. Tim vat lieu (nang cao)\n";
+            cout << "\n1. Tim vat lieu\n";
             cout << "2. Sap xep theo tieu chi\n";
             cout << "0. Thoat\n\n";
             cout << "Chon: ";
